@@ -15,15 +15,20 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('body' , 500);
-            $table->string('email');
-            $table->string('price');
-            $table->string('tag');
-            $table->string('more');
-            $table->integer('user_id');
+            $table->string('firstname');
+            $table->string('Nationality' , 500);
+            $table->string('Number');
+            $table->string('Type');
+            $table->string('Phone');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip');
+            $table->string('Age');
+            $table->string('Natonality1');
+            $table->string('expmonth');
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -35,4 +40,5 @@ class CreatePostsTable extends Migration
     {
         Schema::dropIfExists('posts');
     }
+    
 }

@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateMonysTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('monys', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('Phone');
+            $table->string('National');
+            $table->string('gander');
+            $table->string('Age');
+            $table->string('Weight');
+            $table->string('cost');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('monys');
+    }
+}

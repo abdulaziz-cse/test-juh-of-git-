@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Post;
+use App\Send;
+use App\Mony;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Requset;
@@ -29,16 +32,8 @@ class PostController extends Controller
      */
     public function index()
     {
-       
-
-        $post = Post::orderBy('created_at','desc')->paginate(4);
-
-        return view('posts.index', compact('post'));
-
-      
-
-
-    }
+     return view('hosPost.index');
+     }
     
 
     /**
@@ -46,10 +41,66 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function about()
     {
-        return view('posts.create');
+        return view('hosPost.about');
 
+    }
+
+    public function signinc()
+    {
+        return view('hosPost.signinc');
+
+    }
+    
+    public function contact()
+    {
+        return view('hosPost.contact');
+
+    }
+    public function text()
+    {
+        return view('hosPost.text');
+
+    }
+    public function comfile()
+    {
+        $post = Post::orderBy('created_at','desc')->paginate(10);
+        return view('hosPost.comfile', compact('post'));
+    }
+
+    public function Blood()
+    {
+        $post = Post::orderBy('created_at','desc')->paginate(10);
+        return view('hosPost.Blood', compact('post'));
+    }
+    public function sendBlood()
+    {
+        $post = Post::all();
+        return view('hosPost.sendBlood', compact('post'));
+    }
+
+    
+
+    public function sendMony()
+    {
+
+        return view('hosPost.sendMony');
+    }
+
+
+    public function Mony()
+    {
+        $mony = Mony::orderBy('created_at','desc')->paginate(10);
+
+        return view('hosPost.sendMony', compact('mony'));
+    }
+
+    public function Monys()
+    {
+        $mony = Mony::orderBy('created_at','desc')->paginate(10);
+
+        return view('hosPost.Monys', compact('mony'));
     }
     /**
      * Store a newly created resource in storage.
@@ -60,36 +111,104 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
-            'body'=>'required',
-            'email'=>'required',
-            'post_image'=>'image|nullable|max:1024',
+            'firstname'=>'required',
+            'Nationality'=>'required',
+            'Number'=>'required',
+            'Type'=>'required',
+            'Phone'=>'required',
+            'city'=>'required',
+            'state'=>'required',
+            'zip'=>'required',
+            'Age'=>'required',
+            'Natonality1'=>'required',
+            'expmonth'=>'required',
+
               ]);
 
-       if($request->hasFile('post_image')){  
-    $filenameWithExtention = $request->file('post_image')->getClientOriginalName();
-    $fileName = pathinfo($filenameWithExtention,PATHINFO_FILENAME);
-    $extension = $request->file('post_image')->getClientOriginalExtension();
-    $fileNameStore = $fileName .'_'.time().'.'.$extension;
-    $path = $request->file('post_image')->move(base_path() . '/public/images/', $fileNameStore);
-  
- 
-            
-        }else{
-                $fileNameStore = 'noImage.jpg';
-              } 
               $post = new Post();
-              $post->name = $request->input('name');
-              $post->body = $request->input('body');    
-              $post->email = $request->input('email'); 
-              $post->price = $request->input('price'); 
-              $post->tag = $request->input('tag'); 
-              $post->more = $request->input('more'); 
-              $post->user_id = auth()->user()->id;
-              $post->post_image = $fileNameStore;
+              $post->firstname = $request->input('firstname');
+              $post->Nationality = $request->input('Nationality');    
+              $post->Number = $request->input('Number'); 
+              $post->Type = $request->input('Type'); 
+              $post->Phone = $request->input('Phone'); 
+              $post->city = $request->input('city'); 
+              $post->state = $request->input('state'); 
+              $post->zip = $request->input('zip'); 
+              $post->Age = $request->input('Age'); 
+              $post->Natonality1 = $request->input('Natonality1'); 
+              $post->expmonth = $request->input('expmonth'); 
               $post->save();
 
-              return redirect('/home')->with('success' , 'New code success');
+              return redirect('/comfile')->with('success' , 'New code success');
+
+    }
+
+    public function storemony(Request $request)
+    {
+        $request->validate([
+            'name'=>'required',
+            'Phone'=>'required',
+            'National'=>'required',
+            'gander'=>'required',
+            'Age'=>'required',
+            'Weight'=>'required',
+            'cost'=>'required',
+
+              ]);
+
+              $mony = new Mony();
+
+              $mony->name = $request->input('name');
+              $mony->Phone = $request->input('Phone');    
+              $mony->National = $request->input('National'); 
+              $mony->gander = $request->input('gander'); 
+              $mony->Age = $request->input('Age'); 
+              $mony->Weight = $request->input('Weight'); 
+              $mony->cost = $request->input('cost'); 
+
+              $mony->save();
+
+              return redirect('/Mony')->with('success' , 'New code success');
+
+    }
+    
+
+   
+    
+
+    public function comfiles()
+    {
+        $send = Send::orderBy('created_at','desc')->paginate(10);
+
+        return view('hosPost.comfiles', compact('send'));
+    }
+    
+    
+    public function storeblood(Request $request)
+    {
+
+        $request->validate([
+            'name'=>'required',
+            'Phone'=>'required',
+            'National'=>'required',
+            'gander'=>'required',
+            'Age'=>'required',
+            'Weight'=>'required',
+            'TypeBlood'=>'required',
+
+              ]);
+
+              $send = new Send();
+              $send->name = $request->input('name');
+              $send->Phone = $request->input('Phone');    
+              $send->National = $request->input('National'); 
+              $send->gander = $request->input('gander'); 
+              $send->Age = $request->input('Age'); 
+              $send->Weight = $request->input('Weight'); 
+              $send->TypeBlood = $request->input('TypeBlood'); 
+              $send->save();
+
+              return redirect('/comfiles')->with('success' , 'New code success');
 
     }
 
@@ -99,16 +218,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
+    public function show(Post $post)
     {
-        $post = Post::find($id);
-        $post->tag = $request->input('tag');
-         
-        return view('posts.show', compact('post'));
-
-        
-    
-}
+        //$post = Post::find($id);         
+        return view('hosPost.cheakbox', compact('post')); 
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -119,9 +233,10 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-        return view('posts.edite', compact('post'));
+        return view('hosPost.cheakbox', compact('post'));
 
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -130,38 +245,68 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
     
-    public function update(Request $request, $id)
+    public function updatesend(Request $request, $id)
     {
         $this->validate($request ,[
             'name'=>'required',
-            'email'=>'required',
-            'body'=>'required'
-           ]);
-
-           if($request->hasFile('post_image')){
-            $filenameWithExtention = $request->file('post_image')->getClientOriginalName();
-            $fileName = pathinfo($filenameWithExtention,PATHINFO_FILENAME);
-            $extension = $request->file('post_image')->getClientOriginalExtension();
-            $fileNameStore = $fileName .'_'.time().'.'.$extension;
-            $path = $request->file('post_image')->move(base_path() . '/public/images/', $fileNameStore);
-        } 
-        $post =   Post::find($id);
-        $post->name = $request->input('name');
-        $post->email = $request->input('email');  
-        $post->body  = $request->input('body');
-        $post->tag = $request->input('tag');
-        $post->body      = $request->input('body');
-        $post->more      = $request->input('more');
-        if($request->hasFile('post_image')){
-            $post->post_image      =   $fileNameStore;
-        }
-        $post->save();
-        
-      return redirect('/home')->with('success', 'Done successfully');
+            'Phone'=>'required',
+            'National'=>'required',
+            'gander'=>'required',
+            'Age'=>'required',
+            'Weight'=>'required',
+            'TypeBlood'=>'required',
+                                ]);
+ 
+         $send =   Send::find($id);
+         $send->name = $request->input('name');
+         $send->Phone = $request->input('Phone');    
+         $send->National = $request->input('National'); 
+         $send->gander = $request->input('gander'); 
+         $send->Age = $request->input('Age'); 
+         $send->Weight = $request->input('Weight'); 
+         $send->TypeBlood = $request->input('TypeBlood'); 
+        $send->save();
+   
+        $send->save();
+      return redirect('/')->with('success', 'Done successfully');
     }
 
-
+    public function update(Request $request, $id)
+    {
+        $this->validate($request ,[
+            'firstname'=>'required',
+            'Nationality'=>'required',
+            'Number'=>'required',
+            'Type'=>'required',
+            'Phone'=>'required',
+            'city'=>'required',
+            'state'=>'required',
+            'zip'=>'required',
+            'Age'=>'required',
+            'Natonality1'=>'required',
+            'expmonth'=>'required'
+                                ]);
+ 
+         $post =   Post::find($id);
+         $post->firstname = $request->input('firstname');
+        $post->Nationality = $request->input('Nationality');    
+        $post->Number = $request->input('Number'); 
+        $post->Type = $request->input('Type'); 
+        $post->Phone = $request->input('Phone'); 
+        $post->city = $request->input('city'); 
+        $post->state = $request->input('state'); 
+        $post->zip = $request->input('zip'); 
+        $post->Age = $request->input('Age'); 
+        $post->Natonality1 = $request->input('Natonality1'); 
+        $post->expmonth = $request->input('expmonth'); 
+        $post->save();
+   
+        $post->save();
+      return redirect('/')->with('success', 'Done successfully');
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -176,7 +321,6 @@ class PostController extends Controller
         }
         if($post->post_image != 'noImage.jpg'){
             Storage::delete('public/images/'.$post->post_image);
-        
         }
 
 

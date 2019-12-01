@@ -26,17 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $userId = Auth::id();
-        $user = User::find($userId);
-        $posts = $user->posts;
-        return view('posts.home', compact('posts'));    }
+      $post =   Post::all();
+        return view('hosPost.comfile', compact('post'));  
+      }
 
 
-public function test()
-{
-    
-    return view('test', compact('posts'));    }
-
-
-}
-
+    }
